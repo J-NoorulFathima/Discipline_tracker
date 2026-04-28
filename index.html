@@ -731,6 +731,76 @@
     margin: 8px 0;
   }
 
+  /* Date navigation */
+  .date-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .date-nav-center {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .date-nav-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    border: 1px solid var(--border2);
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+    flex-shrink: 0;
+  }
+
+  .date-nav-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); color: var(--accent); }
+  .date-nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
+
+  #date-picker {
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+  }
+
+  .date-jump-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all var(--transition);
+    width: fit-content;
+  }
+
+  .date-jump-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(200,255,87,0.06); }
+
+  .past-badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(255,184,87,0.12);
+    border: 1px solid rgba(255,184,87,0.3);
+    color: var(--gold);
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.05em;
+    animation: fadeUp 0.3s ease;
+  }
+
   /* Reset button */
   .reset-btn {
     width: 100%;
@@ -883,8 +953,17 @@
   <div class="header">
     <div class="header-left">
       <div class="header-eyebrow">Daily Discipline</div>
-      <h1 class="header-title">Today's Check-in</h1>
-      <div class="header-date" id="today-date">Loading...</div>
+      <h1 class="header-title" id="header-title">Today's Check-in</h1>
+      <div class="date-nav">
+        <button class="date-nav-btn" onclick="shiftDate(-1)" title="Previous day">&#8592;</button>
+        <div class="date-nav-center">
+          <div class="header-date" id="today-date">Loading...</div>
+          <input type="date" id="date-picker" onchange="jumpToDate(this.value)">
+          <button class="date-jump-btn" onclick="document.getElementById('date-picker').showPicker()">📅 Pick date</button>
+        </div>
+        <button class="date-nav-btn" id="btn-next" onclick="shiftDate(1)" title="Next day">&#8594;</button>
+      </div>
+      <div class="past-badge" id="past-badge" style="display:none;">Editing past entry</div>
     </div>
     <div class="header-score">
       <svg class="score-ring" viewBox="0 0 72 72">
@@ -1160,13 +1239,19 @@ const pills = { coding: null, income: null, goal: null };
 const lc = { easy: 0, med: 0, hard: 0 };
 let starVal = 0;
 
-function getToday() {
-  return new Date().toISOString().split('T')[0];
+// Active date — defaults to today, can be changed by user
+let activeDate = getTodayStr();
+
+function getTodayStr() {
+  const now = new Date();
+  return now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
 }
+
+function getToday() { return activeDate; }
 
 function loadData() {
   try {
-    const raw = localStorage.getItem('discipline_' + getToday());
+    const raw = localStorage.getItem('discipline_' + activeDate);
     return raw ? JSON.parse(raw) : null;
   } catch(e) { return null; }
 }
@@ -1181,11 +1266,84 @@ function loadAllData() {
   return all;
 }
 
-// ——— Date ———
-const dateEl = document.getElementById('today-date');
-const now = new Date();
-dateEl.textContent = now.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-document.getElementById('streak-year').textContent = now.getFullYear();
+// ——— Date navigation ———
+function updateDateUI() {
+  const todayStr = getTodayStr();
+  const d = new Date(activeDate + 'T00:00:00');
+  const isToday = activeDate === todayStr;
+
+  document.getElementById('today-date').textContent = d.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  document.getElementById('header-title').textContent = isToday ? "Today's Check-in" : "Past Entry";
+  document.getElementById('past-badge').style.display = isToday ? 'none' : 'inline-block';
+  document.getElementById('past-badge').textContent = isToday ? '' : '✎ Editing ' + d.toLocaleDateString('en-IN', { month:'short', day:'numeric', year:'numeric' });
+
+  // Disable next arrow if on today
+  document.getElementById('btn-next').disabled = isToday;
+  document.getElementById('date-picker').max = todayStr;
+  document.getElementById('date-picker').value = activeDate;
+}
+
+function shiftDate(delta) {
+  const d = new Date(activeDate + 'T00:00:00');
+  d.setDate(d.getDate() + delta);
+  const newStr = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  if (newStr > getTodayStr()) return;
+  // Min = Jan 1 of this year
+  const minStr = d.getFullYear() + '-01-01';
+  const yearStart = new Date().getFullYear() + '-01-01';
+  if (newStr < yearStart) return;
+  activeDate = newStr;
+  updateDateUI();
+  clearForm();
+  restoreToday();
+  updateScore();
+}
+
+function jumpToDate(val) {
+  if (!val) return;
+  const todayStr = getTodayStr();
+  const yearStart = new Date().getFullYear() + '-01-01';
+  if (val > todayStr) val = todayStr;
+  if (val < yearStart) val = yearStart;
+  activeDate = val;
+  updateDateUI();
+  clearForm();
+  restoreToday();
+  updateScore();
+}
+
+function clearForm() {
+  // Reset all state
+  Object.keys(nums).forEach(k => nums[k] = k === 'sleep' ? 7 : 0);
+  Object.keys(pills).forEach(k => pills[k] = null);
+  lc.easy = lc.med = lc.hard = 0;
+  starVal = 0;
+
+  // Reset UI
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('selected'));
+  document.getElementById('sub-coding-hrs').classList.remove('open');
+  document.getElementById('sub-income-amt').classList.remove('open');
+
+  document.getElementById('coding-hrs-val').textContent = '0';
+  document.getElementById('waste-val').textContent = '0';
+  document.getElementById('learn-val').textContent = '0';
+  document.getElementById('sleep-val').textContent = '7';
+  document.getElementById('social-val').textContent = '0';
+  document.getElementById('screen-val').textContent = '0';
+  document.getElementById('lc-easy').textContent = '0';
+  document.getElementById('lc-med').textContent = '0';
+  document.getElementById('lc-hard').textContent = '0';
+  document.getElementById('income-amt').value = '';
+  document.getElementById('wake-time').value = '06:00';
+  document.getElementById('bed-time').value = '23:00';
+  document.getElementById('pending-tasks').value = '';
+  document.getElementById('star-bar').style.width = '0%';
+  document.querySelectorAll('.star').forEach(s => s.classList.remove('lit'));
+}
+
+// Init date UI
+document.getElementById('streak-year').textContent = new Date().getFullYear();
+updateDateUI();
 
 // ——— Nums ———
 function adjustNum(key, delta) {
@@ -1272,7 +1430,7 @@ function updateScore() {
 // ——— Save ———
 function saveDay() {
   const entry = {
-    date: getToday(),
+    date: activeDate,
     coding: pills.coding,
     codingHrs: nums['coding-hrs'],
     income: pills.income,
@@ -1290,8 +1448,9 @@ function saveDay() {
     goal: pills.goal
   };
 
-  localStorage.setItem('discipline_' + getToday(), JSON.stringify(entry));
-  showToast('✦ Entry saved!');
+  localStorage.setItem('discipline_' + activeDate, JSON.stringify(entry));
+  const label = activeDate === getTodayStr() ? "Today's entry saved!" : "Past entry saved!";
+  showToast('✦ ' + label);
   buildStreak();
 }
 
@@ -1332,7 +1491,7 @@ function buildStreak() {
     const key = date.toISOString().split('T')[0];
     const entry = allData[key];
     const earning = entry ? (entry.incomeAmt || 0) : 0;
-    const isToday = key === getToday();
+    const isToday = key === getTodayStr();
     cells.push({ date, key, earning, isToday });
   }
 
@@ -1455,9 +1614,9 @@ function computeStreakStats(allData, year) {
   });
 
   // Current streak
-  let d = new Date(today);
+  let d = new Date(getTodayStr() + 'T00:00:00');
   while (true) {
-    const k = d.toISOString().split('T')[0];
+    const k = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
     if (allData[k] && allData[k].incomeAmt > 0) {
       streak++;
       d.setDate(d.getDate() - 1);
@@ -1477,21 +1636,24 @@ function computeStreakStats(allData, year) {
   document.getElementById('stat-days').textContent = activeDays;
 }
 
-// ——— Restore today's data ———
+// ——— Restore data for activeDate ———
 function restoreToday() {
   const entry = loadData();
   if (!entry) return;
 
-  if (entry.coding !== null) {
+  if (entry.coding !== null && entry.coding !== undefined) {
     pills.coding = entry.coding;
     const card = document.getElementById('card-coding');
     const pillEls = card.querySelectorAll('.pill');
     if (entry.coding) { pillEls[0].classList.add('selected'); document.getElementById('sub-coding-hrs').classList.add('open'); }
     else pillEls[1].classList.add('selected');
   }
-  if (entry.codingHrs) { nums['coding-hrs'] = entry.codingHrs; document.getElementById('coding-hrs-val').textContent = entry.codingHrs; }
+  if (entry.codingHrs) {
+    nums['coding-hrs'] = entry.codingHrs;
+    document.getElementById('coding-hrs-val').textContent = entry.codingHrs % 1 === 0 ? entry.codingHrs : entry.codingHrs.toFixed(1);
+  }
 
-  if (entry.income !== null) {
+  if (entry.income !== null && entry.income !== undefined) {
     pills.income = entry.income;
     const card = document.getElementById('card-income');
     const pillEls = card.querySelectorAll('.pill');
@@ -1518,14 +1680,17 @@ function restoreToday() {
     document.getElementById('lc-hard').textContent = lc.hard;
   }
   if (entry.star) setStar(entry.star);
-  if (entry.goal !== null) {
+
+  if (entry.goal !== null && entry.goal !== undefined) {
     pills.goal = entry.goal;
-    const card = document.querySelectorAll('.card')[9];
-    if (card) {
-      const pillEls = card.querySelectorAll('.pill');
-      if (entry.goal) pillEls[0] && pillEls[0].classList.add('selected');
-      else pillEls[1] && pillEls[1].classList.add('selected');
-    }
+    // Find the goal card by its unique label text
+    document.querySelectorAll('.card').forEach(card => {
+      if (card.querySelector('.card-label') && card.querySelector('.card-label').textContent.includes('main goal')) {
+        const pillEls = card.querySelectorAll('.pill');
+        if (entry.goal) pillEls[0] && pillEls[0].classList.add('selected');
+        else pillEls[1] && pillEls[1].classList.add('selected');
+      }
+    });
   }
 
   updateScore();
