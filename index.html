@@ -436,13 +436,11 @@
   .streak-cell[data-level="5"] { background: #e8ff90; box-shadow: 0 0 8px rgba(200,255,87,0.5); }
   .streak-cell.today { outline: 2px solid var(--accent); outline-offset: 1px; }
 
-  /* Goal streak colors */
   .streak-cell[data-goal="yes"] { background: #3a6e14; }
   .streak-cell[data-goal="yes-bright"] { background: var(--accent); box-shadow: 0 0 6px rgba(200,255,87,0.4); }
   .streak-cell[data-goal="no"] { background: rgba(255,87,87,0.35); }
   .streak-cell[data-goal="none"] { background: rgba(255,255,255,0.06); }
 
-  /* Sleep streak colors */
   .streak-cell[data-sleep="7"] { background: #c8ff57; }
   .streak-cell[data-sleep="6"] { background: #8db83e; }
   .streak-cell[data-sleep="5"] { background: #5a7a28; }
@@ -451,7 +449,6 @@
   .streak-cell[data-sleep="none"] { background: rgba(255,255,255,0.06); }
   .streak-cell[data-sleep="over"] { background: #57c8ff; }
 
-  /* Addiction streak colors */
   .streak-cell[data-social="0"] { background: #c8ff57; box-shadow: 0 0 5px rgba(200,255,87,0.3); }
   .streak-cell[data-social="1"] { background: #8db83e; }
   .streak-cell[data-social="2"] { background: #6a8a2e; }
@@ -590,6 +587,220 @@
   }
   .reset-btn:hover { background: rgba(255,87,87,0.08); border-color: rgba(255,87,87,0.5); opacity: 1; }
 
+  /* ——— GIST SYNC SPECIFIC ——— */
+  .gist-sync-wrap {
+    margin-bottom: 18px;
+  }
+
+  .gist-sync-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .gist-sync-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .gist-status-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    padding: 2px 7px;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+    transition: all var(--transition);
+  }
+
+  .gist-status-badge.disconnected {
+    background: rgba(255,184,87,0.15);
+    color: var(--gold);
+    border: 1px solid rgba(255,184,87,0.25);
+  }
+
+  .gist-status-badge.connected {
+    background: rgba(200,255,87,0.15);
+    color: var(--accent);
+    border: 1px solid rgba(200,255,87,0.25);
+  }
+
+  .gist-status-badge.syncing {
+    background: rgba(87,200,255,0.15);
+    color: var(--blue);
+    border: 1px solid rgba(87,200,255,0.25);
+    animation: pulse 1s infinite;
+  }
+
+  .gist-status-badge.error {
+    background: rgba(255,87,87,0.15);
+    color: var(--red);
+    border: 1px solid rgba(255,87,87,0.25);
+  }
+
+  .gist-disconnect-btn {
+    font-size: 11px;
+    color: var(--red);
+    background: none;
+    border: 1px solid rgba(255,87,87,0.25);
+    border-radius: 8px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all var(--transition);
+  }
+  .gist-disconnect-btn:hover { background: rgba(255,87,87,0.1); border-color: rgba(255,87,87,0.5); }
+
+  .gist-setup-desc {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    line-height: 1.7;
+  }
+
+  .gist-setup-desc a {
+    color: var(--accent);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+  }
+  .gist-setup-desc a:hover { text-decoration: underline; }
+
+  .gist-token-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .gist-token-input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .gist-token-input:focus { border-color: var(--accent); }
+
+  .gist-connect-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: #0b0c10;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s, transform var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .gist-connect-btn:hover { opacity: 0.85; }
+  .gist-connect-btn:active { transform: scale(0.97); }
+  .gist-connect-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .gist-info-line {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-family: 'Space Mono', monospace;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .gist-info-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    box-shadow: 0 0 6px rgba(200,255,87,0.5);
+  }
+
+  .gist-action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .gist-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid var(--border2);
+    background: rgba(255,255,255,0.03);
+    color: var(--text);
+    cursor: pointer;
+    transition: all var(--transition);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .gist-action-btn:hover { background: rgba(255,255,255,0.07); }
+  .gist-action-btn:active { transform: scale(0.97); }
+  .gist-action-btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+  .gist-push-btn:hover { border-color: var(--accent); }
+  .gist-pull-btn:hover { border-color: var(--blue); }
+
+  .gist-btn-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .gist-push-btn .gist-btn-icon { background: rgba(200,255,87,0.1); }
+  .gist-pull-btn .gist-btn-icon { background: rgba(87,200,255,0.1); }
+
+  .gist-btn-label { font-size: 14px; font-weight: 600; }
+  .gist-btn-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+
+  .gist-last-sync {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 10px;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .gist-error-msg {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(255,87,87,0.08);
+    border: 1px solid rgba(255,87,87,0.25);
+    border-radius: 10px;
+    font-size: 12px;
+    color: var(--red);
+    font-family: 'Space Mono', monospace;
+    line-height: 1.5;
+    display: none;
+  }
+
+  .gist-success-msg {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(200,255,87,0.08);
+    border: 1px solid rgba(200,255,87,0.2);
+    border-radius: 10px;
+    font-size: 12px;
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    line-height: 1.5;
+    display: none;
+  }
+
   /* ——— MODAL ——— */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 500; align-items: center; justify-content: center; backdrop-filter: blur(4px); animation: fadeIn 0.2s ease; }
   .modal-overlay.open { display: flex; }
@@ -619,8 +830,6 @@
   .date-nav-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); color: var(--accent); }
   .date-nav-btn:disabled { opacity: 0.25; cursor: not-allowed; }
 
-
-
   .date-jump-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border2); border-radius: 8px; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 4px 10px; cursor: pointer; transition: all var(--transition); width: fit-content; }
   .date-jump-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(200,255,87,0.06); }
 
@@ -637,6 +846,7 @@
   @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
   @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
   .card:nth-child(1) { animation-delay: 0.05s; }
   .card:nth-child(2) { animation-delay: 0.1s; }
@@ -649,6 +859,8 @@
 
   .ring-circle { transition: stroke-dashoffset 1s cubic-bezier(0.4,0,0.2,1); }
 
+  .spinning { animation: spin 1s linear infinite; display: inline-block; }
+
   @media (max-width: 600px) {
     .grid-2, .grid-3 { grid-template-columns: 1fr; }
     .streak-stats { grid-template-columns: 1fr 1fr; }
@@ -657,6 +869,7 @@
     .score-ring { margin-left: 0; }
     .fin-tabs { grid-template-columns: 1fr 1fr; }
     .backup-row { grid-template-columns: 1fr; }
+    .gist-action-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -866,14 +1079,78 @@
 
   <button class="save-btn" onclick="saveDay()">✦ Save Today's Entry</button>
 
-  <!-- SYNC / BACKUP -->
+  <!-- ——— SYNC / BACKUP ——— -->
   <div class="sync-section" style="margin-top:16px;">
-    <div class="sync-header">
-      <div class="sync-title">
-        💾 Data Backup
-        <span class="sync-badge local">LOCAL STORAGE</span>
+
+    <!-- GitHub Gist Sync -->
+    <div class="gist-sync-wrap">
+      <div class="gist-sync-header">
+        <div class="gist-sync-title">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="flex-shrink:0;">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+          GitHub Gist Sync
+          <span class="gist-status-badge disconnected" id="gist-status-badge">NOT CONNECTED</span>
+        </div>
+        <button class="gist-disconnect-btn" id="gist-disconnect-btn" onclick="disconnectGist()" style="display:none;">Disconnect</button>
       </div>
-      <div style="font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;">Export to use on other devices</div>
+
+      <!-- Setup panel (shown when not connected) -->
+      <div id="gist-setup-panel">
+        <div class="gist-setup-desc">
+          Sync your data across all devices via a private GitHub Gist.<br>
+          <a href="https://github.com/settings/tokens/new?scopes=gist&description=DisciplineTracker" target="_blank" rel="noopener">
+            github.com → Settings → Developer settings → Tokens (classic) → tick <strong style="color:var(--accent);">gist</strong>
+          </a>
+        </div>
+        <div class="gist-token-row">
+          <input
+            class="gist-token-input"
+            id="gist-token-input"
+            type="password"
+            placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+            onkeydown="if(event.key==='Enter') connectGist()"
+          >
+          <button class="gist-connect-btn" id="gist-connect-btn" onclick="connectGist()">
+            Connect
+          </button>
+        </div>
+        <div class="gist-error-msg" id="gist-error-msg"></div>
+      </div>
+
+      <!-- Actions panel (shown when connected) -->
+      <div id="gist-actions-panel" style="display:none;">
+        <div class="gist-info-line">
+          <span class="gist-info-dot"></span>
+          <span id="gist-info-text">Connected · Gist ready</span>
+        </div>
+        <div class="gist-action-grid">
+          <button class="gist-action-btn gist-push-btn" id="gist-push-btn" onclick="pushToGist()">
+            <div class="gist-btn-icon">☁️</div>
+            <div>
+              <div class="gist-btn-label">Push to Gist</div>
+              <div class="gist-btn-sub">Upload all data → GitHub</div>
+            </div>
+          </button>
+          <button class="gist-action-btn gist-pull-btn" id="gist-pull-btn" onclick="pullFromGist()">
+            <div class="gist-btn-icon">📥</div>
+            <div>
+              <div class="gist-btn-label">Pull from Gist</div>
+              <div class="gist-btn-sub">Download latest from GitHub</div>
+            </div>
+          </button>
+        </div>
+        <div class="gist-last-sync" id="gist-last-sync">Never synced</div>
+        <div class="gist-error-msg" id="gist-op-error-msg"></div>
+        <div class="gist-success-msg" id="gist-op-success-msg"></div>
+      </div>
+    </div>
+
+    <div style="height:1px;background:var(--border);margin:16px 0;"></div>
+
+    <!-- Local backup -->
+    <div class="sync-header" style="margin-bottom:10px;">
+      <div class="sync-title" style="font-size:13px;">💾 Local Backup <span class="sync-badge local">JSON FILE</span></div>
     </div>
     <div class="backup-row">
       <button class="backup-btn export-btn" onclick="exportData()">
@@ -1340,7 +1617,6 @@ function showToast(msg) {
 
 // ——— PENDING TASKS BAR ———
 function buildPendingBar() {
-  // Find the most recent past entry that has pending tasks
   const allData = loadAllData();
   const today = getTodayStr();
   const keys = Object.keys(allData).filter(k => k < today && allData[k].pending && allData[k].pending.trim()).sort().reverse();
@@ -1365,7 +1641,6 @@ function buildPendingBar() {
   dateLabel.textContent = d.toLocaleDateString('en-IN', { weekday:'short', month:'short', day:'numeric' });
   countEl.textContent = lines.length;
 
-  // Load done states from localStorage
   const doneKey = 'pending_done_' + latestKey;
   let doneStates = {};
   try { doneStates = JSON.parse(localStorage.getItem(doneKey) || '{}'); } catch(e) {}
@@ -1551,8 +1826,7 @@ function buildGoalStreak() {
 
   animateCells(grid);
 
-  // Stats
-  const keys = Object.keys(allData).filter(k => k.startsWith(year+'-')).sort();
+  const keys = Object.keys(allData).filter(k => k.startsWith(new Date().getFullYear()+'-')).sort();
   let yesCount = 0, noCount = 0, curStreak = 0, bestStreak = 0, tempStreak = 0;
   keys.forEach(k => {
     if (allData[k] && allData[k].goal === true) yesCount++;
@@ -1606,8 +1880,7 @@ function buildSleepStreak() {
 
   animateCells(grid);
 
-  // Stats
-  const keys = Object.keys(allData).filter(k => k.startsWith(year+'-')).sort();
+  const keys = Object.keys(allData).filter(k => k.startsWith(new Date().getFullYear()+'-')).sort();
   let perfectDays = 0, totalHrs = 0, count = 0, curStreak = 0, bestStreak = 0, tempS = 0;
   keys.forEach(k => {
     if (allData[k] && allData[k].sleep !== undefined) {
@@ -1669,8 +1942,7 @@ function buildSocialStreak() {
 
   animateCells(grid);
 
-  // Stats
-  const keys = Object.keys(allData).filter(k => k.startsWith(year+'-')).sort();
+  const keys = Object.keys(allData).filter(k => k.startsWith(new Date().getFullYear()+'-')).sort();
   let dangerDays = 0, totalHrs = 0, count = 0, cleanStreak = 0, bestClean = 0, tempClean = 0;
   keys.forEach(k => {
     if (allData[k] && allData[k].social !== undefined) {
@@ -1928,7 +2200,7 @@ function confirmReset() {
     setTimeout(() => document.getElementById('reset-confirm-input').classList.remove('wrong'), 400);
     return;
   }
-  Object.keys(localStorage).filter(k => k.startsWith('discipline_') || k.startsWith('pending_done_')).forEach(k => localStorage.removeItem(k));
+  Object.keys(localStorage).filter(k => k.startsWith('discipline_') || k.startsWith('pending_done_') || k.startsWith('gist_')).forEach(k => localStorage.removeItem(k));
   closeResetModal();
   showToast('All data cleared.');
   location.reload();
@@ -1937,11 +2209,335 @@ document.getElementById('reset-modal').addEventListener('click', function(e) { i
 document.addEventListener('keydown', e => { if(e.key==='Escape') { closeResetModal(); closeImportModal(); } });
 
 
+// ════════════════════════════════════════════════════════
+//  GITHUB GIST SYNC — Full Implementation
+// ════════════════════════════════════════════════════════
+
+const GIST_FILENAME = 'discipline-tracker-data.json';
+const GIST_TOKEN_KEY = 'gist_token';
+const GIST_ID_KEY = 'gist_id';
+const GIST_LAST_SYNC_KEY = 'gist_last_sync';
+
+// --- UI helpers ---
+function setGistBadge(state, label) {
+  const badge = document.getElementById('gist-status-badge');
+  badge.className = 'gist-status-badge ' + state;
+  badge.textContent = label;
+}
+
+function setGistButtons(loading) {
+  const pushBtn = document.getElementById('gist-push-btn');
+  const pullBtn = document.getElementById('gist-pull-btn');
+  if (pushBtn) pushBtn.disabled = loading;
+  if (pullBtn) pullBtn.disabled = loading;
+}
+
+function showGistError(msg) {
+  const el = document.getElementById('gist-op-error-msg');
+  const ok = document.getElementById('gist-op-success-msg');
+  if (!el) return;
+  el.textContent = '⚠ ' + msg;
+  el.style.display = 'block';
+  if (ok) ok.style.display = 'none';
+  setTimeout(() => { el.style.display = 'none'; }, 6000);
+}
+
+function showGistSuccess(msg) {
+  const el = document.getElementById('gist-op-success-msg');
+  const err = document.getElementById('gist-op-error-msg');
+  if (!el) return;
+  el.textContent = '✓ ' + msg;
+  el.style.display = 'block';
+  if (err) err.style.display = 'none';
+  setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+
+function updateLastSyncLabel() {
+  const ts = localStorage.getItem(GIST_LAST_SYNC_KEY);
+  const el = document.getElementById('gist-last-sync');
+  if (!el) return;
+  if (!ts) { el.textContent = 'Never synced'; return; }
+  const d = new Date(ts);
+  el.textContent = 'Last synced: ' + d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) + ' at ' + d.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+}
+
+function showConnectedUI(gistId) {
+  document.getElementById('gist-setup-panel').style.display = 'none';
+  document.getElementById('gist-actions-panel').style.display = 'block';
+  document.getElementById('gist-disconnect-btn').style.display = 'block';
+  setGistBadge('connected', 'CONNECTED');
+  const shortId = gistId ? gistId.substring(0, 8) + '...' : '?';
+  document.getElementById('gist-info-text').textContent = 'Connected · Gist ID: ' + shortId;
+  updateLastSyncLabel();
+}
+
+function showDisconnectedUI() {
+  document.getElementById('gist-setup-panel').style.display = 'block';
+  document.getElementById('gist-actions-panel').style.display = 'none';
+  document.getElementById('gist-disconnect-btn').style.display = 'none';
+  setGistBadge('disconnected', 'NOT CONNECTED');
+  document.getElementById('gist-token-input').value = '';
+}
+
+// --- Core API call ---
+async function gistApiCall(method, path, body, token) {
+  const res = await fetch('https://api.github.com' + path, {
+    method,
+    headers: {
+      'Authorization': 'token ' + token,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+      'X-GitHub-Api-Version': '2022-11-28'
+    },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    const msg = data.message || ('HTTP ' + res.status);
+    throw new Error(msg);
+  }
+  return data;
+}
+
+// --- Connect ---
+async function connectGist() {
+  const tokenInput = document.getElementById('gist-token-input');
+  const connectBtn = document.getElementById('gist-connect-btn');
+  const errorEl = document.getElementById('gist-error-msg');
+  const token = tokenInput.value.trim();
+
+  if (!token) {
+    errorEl.textContent = '⚠ Please paste your GitHub token first.';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  // Basic format check
+  if (!token.startsWith('ghp_') && !token.startsWith('github_pat_') && token.length < 20) {
+    errorEl.textContent = '⚠ Token looks invalid. It should start with ghp_ or github_pat_';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  connectBtn.disabled = true;
+  connectBtn.textContent = '⏳ Connecting...';
+  errorEl.style.display = 'none';
+  setGistBadge('syncing', 'CONNECTING...');
+
+  try {
+    // Verify token works
+    await gistApiCall('GET', '/user', null, token);
+
+    // Check if we have a saved gist ID and it's still valid
+    let gistId = localStorage.getItem(GIST_ID_KEY);
+    if (gistId) {
+      try {
+        await gistApiCall('GET', '/gists/' + gistId, null, token);
+        // Gist still exists — good
+      } catch(e) {
+        // Gist was deleted, clear it
+        gistId = null;
+        localStorage.removeItem(GIST_ID_KEY);
+      }
+    }
+
+    // If no gist ID, search existing gists for our file or create new
+    if (!gistId) {
+      gistId = await findOrCreateGist(token);
+    }
+
+    // Save credentials
+    localStorage.setItem(GIST_TOKEN_KEY, token);
+    localStorage.setItem(GIST_ID_KEY, gistId);
+
+    showConnectedUI(gistId);
+    showToast('✦ Connected to GitHub Gist!');
+
+  } catch(err) {
+    let userMsg = err.message;
+    if (userMsg.includes('Bad credentials') || userMsg.includes('401')) {
+      userMsg = 'Invalid token. Make sure you copied it correctly and it has "gist" scope.';
+    } else if (userMsg.includes('403')) {
+      userMsg = 'Token missing "gist" scope. Create a new token with gist permission.';
+    } else if (userMsg.includes('Failed to fetch') || userMsg.includes('NetworkError')) {
+      userMsg = 'Network error — check your internet connection.';
+    }
+    errorEl.textContent = '⚠ ' + userMsg;
+    errorEl.style.display = 'block';
+    setGistBadge('error', 'ERROR');
+  } finally {
+    connectBtn.disabled = false;
+    connectBtn.textContent = 'Connect';
+  }
+}
+
+async function findOrCreateGist(token) {
+  // List all gists and find one that has our filename
+  const gists = await gistApiCall('GET', '/gists?per_page=100', null, token);
+  const found = gists.find(g => g.files && g.files[GIST_FILENAME]);
+  if (found) return found.id;
+
+  // Create a new private gist
+  const allData = loadAllData();
+  const payload = {
+    description: 'Daily Discipline Tracker — Auto Sync',
+    public: false,
+    files: {
+      [GIST_FILENAME]: {
+        content: JSON.stringify({
+          _meta: { app: 'Daily Discipline Tracker', version: '2.0', createdAt: new Date().toISOString() },
+          data: allData
+        }, null, 2)
+      }
+    }
+  };
+  const newGist = await gistApiCall('POST', '/gists', payload, token);
+  return newGist.id;
+}
+
+// --- Disconnect ---
+function disconnectGist() {
+  localStorage.removeItem(GIST_TOKEN_KEY);
+  localStorage.removeItem(GIST_ID_KEY);
+  showDisconnectedUI();
+  showToast('Disconnected from GitHub Gist');
+}
+
+// --- Push ---
+async function pushToGist() {
+  const token = localStorage.getItem(GIST_TOKEN_KEY);
+  const gistId = localStorage.getItem(GIST_ID_KEY);
+  if (!token || !gistId) { showGistError('Not connected. Please connect first.'); return; }
+
+  setGistBadge('syncing', 'PUSHING...');
+  setGistButtons(true);
+
+  try {
+    const allData = loadAllData();
+    const count = Object.keys(allData).length;
+    const payload = {
+      files: {
+        [GIST_FILENAME]: {
+          content: JSON.stringify({
+            _meta: {
+              app: 'Daily Discipline Tracker',
+              version: '2.0',
+              pushedAt: new Date().toISOString(),
+              totalDays: count
+            },
+            data: allData
+          }, null, 2)
+        }
+      }
+    };
+
+    await gistApiCall('PATCH', '/gists/' + gistId, payload, token);
+    const now = new Date().toISOString();
+    localStorage.setItem(GIST_LAST_SYNC_KEY, now);
+    updateLastSyncLabel();
+    setGistBadge('connected', 'CONNECTED');
+    showGistSuccess('Pushed ' + count + ' day' + (count !== 1 ? 's' : '') + ' to GitHub Gist!');
+    showToast('☁️ Pushed ' + count + ' days to Gist');
+
+  } catch(err) {
+    setGistBadge('error', 'PUSH FAILED');
+    const msg = err.message.includes('Bad credentials') ? 'Token expired — please reconnect.' : err.message;
+    showGistError('Push failed: ' + msg);
+    // If token expired, show reconnect
+    if (err.message.includes('Bad credentials') || err.message.includes('401')) {
+      setTimeout(() => disconnectGist(), 2000);
+    }
+  } finally {
+    setGistButtons(false);
+    setTimeout(() => setGistBadge('connected', 'CONNECTED'), 3000);
+  }
+}
+
+// --- Pull ---
+async function pullFromGist() {
+  const token = localStorage.getItem(GIST_TOKEN_KEY);
+  const gistId = localStorage.getItem(GIST_ID_KEY);
+  if (!token || !gistId) { showGistError('Not connected. Please connect first.'); return; }
+
+  setGistBadge('syncing', 'PULLING...');
+  setGistButtons(true);
+
+  try {
+    const gist = await gistApiCall('GET', '/gists/' + gistId, null, token);
+
+    if (!gist.files || !gist.files[GIST_FILENAME]) {
+      throw new Error('Data file not found in gist. Try pushing first from another device.');
+    }
+
+    // The raw_url has the latest content; use fetch directly
+    const rawUrl = gist.files[GIST_FILENAME].raw_url;
+    const rawRes = await fetch(rawUrl, {
+      headers: { 'Authorization': 'token ' + token }
+    });
+    if (!rawRes.ok) throw new Error('Failed to fetch gist content');
+    const rawText = await rawRes.text();
+
+    let parsed;
+    try { parsed = JSON.parse(rawText); } catch(e) { throw new Error('Gist data is corrupted or not valid JSON.'); }
+
+    let data = parsed;
+    if (parsed._meta && parsed.data) data = parsed.data;
+
+    const keys = Object.keys(data).filter(k => /^\d{4}-\d{2}-\d{2}$/.test(k));
+    if (keys.length === 0) throw new Error('No valid entries found in the gist.');
+
+    let imported = 0;
+    keys.forEach(k => {
+      try { localStorage.setItem('discipline_' + k, JSON.stringify(data[k])); imported++; } catch(e) {}
+    });
+
+    const now = new Date().toISOString();
+    localStorage.setItem(GIST_LAST_SYNC_KEY, now);
+    updateLastSyncLabel();
+    setGistBadge('connected', 'CONNECTED');
+    showGistSuccess('Pulled ' + imported + ' day' + (imported !== 1 ? 's' : '') + ' from GitHub Gist!');
+    showToast('📥 Pulled ' + imported + ' days from Gist');
+
+    // Refresh all UI
+    buildAllStreaks();
+    buildMonthly();
+    buildPendingBar();
+    clearForm();
+    restoreToday();
+    updateScore();
+
+  } catch(err) {
+    setGistBadge('error', 'PULL FAILED');
+    const msg = err.message.includes('Bad credentials') ? 'Token expired — please reconnect.' : err.message;
+    showGistError('Pull failed: ' + msg);
+    if (err.message.includes('Bad credentials') || err.message.includes('401')) {
+      setTimeout(() => disconnectGist(), 2000);
+    }
+  } finally {
+    setGistButtons(false);
+    setTimeout(() => setGistBadge('connected', 'CONNECTED'), 3000);
+  }
+}
+
+// --- Init gist UI on load ---
+function initGistUI() {
+  const token = localStorage.getItem(GIST_TOKEN_KEY);
+  const gistId = localStorage.getItem(GIST_ID_KEY);
+  if (token && gistId) {
+    showConnectedUI(gistId);
+  } else {
+    showDisconnectedUI();
+  }
+}
+
+// ════════════════════════════════════════════════════════
+
 restoreToday();
 buildAllStreaks();
 buildMonthly();
 buildPendingBar();
 updateScore();
+initGistUI();
 </script>
 </body>
 </html>
